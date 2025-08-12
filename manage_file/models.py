@@ -1,9 +1,13 @@
+import uuid
+
 from django.db import models
+
+from common.models import BaseModelWithUID
 
 from .choices import STATUS_CHOICES
 
 
-class FileUpload(models.Model):
+class FileUpload(BaseModelWithUID):
     user = models.ForeignKey(
         "core.User", on_delete=models.CASCADE, related_name="file_uploads"
     )
@@ -19,7 +23,7 @@ class FileUpload(models.Model):
         return f"{self.filename} ({self.status})"
 
 
-class PaymentTransaction(models.Model):
+class PaymentTransaction(BaseModelWithUID):
     user = models.ForeignKey(
         "core.User", on_delete=models.CASCADE, related_name="payment_transactions"
     )
@@ -35,7 +39,7 @@ class PaymentTransaction(models.Model):
         return f"Transaction {self.transaction_id} - {self.status}"
 
 
-class ActivityLog(models.Model):
+class ActivityLog(BaseModelWithUID):
     user = models.ForeignKey(
         "core.User", on_delete=models.CASCADE, related_name="activity_logs"
     )
@@ -45,3 +49,16 @@ class ActivityLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.action} at {self.timestamp}"
+
+
+class PaymentToken(BaseModelWithUID):
+    user = models.ForeignKey(
+        "core.User", on_delete=models.CASCADE, related_name="payment_tokens"
+    )
+    token = models.UUIDField(
+        db_index=True, unique=True, default=uuid.uuid4, editable=False
+    )
+    is_taken = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.is_taken}"
