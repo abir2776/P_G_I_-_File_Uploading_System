@@ -30,4 +30,7 @@ urlpatterns = [
         name="redoc",
     ),
     path("api/auth/", include("core.rest.urls.registration")),
+    path("api/file", include("manage_file.rest.urls.file")),
+    path("/api/transactions", include("manage_file.rest.urls.payment")),
+    path("/api/activity", include("manage_file.rest.urls.activity_log")),
 ]

@@ -4,7 +4,7 @@ from django.db import models
 
 from common.models import BaseModelWithUID
 
-from .choices import STATUS_CHOICES
+from manage_file.choices import STATUS_CHOICES
 
 
 class FileUpload(BaseModelWithUID):
